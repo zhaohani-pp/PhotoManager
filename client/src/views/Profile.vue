@@ -192,72 +192,170 @@ onMounted(fetchProfile);
 </script>
 
 <style scoped>
-.profile-layout {
-  min-height: 100vh; background: #f1f5f9; padding: 40px 20px;
-  font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+.profile-container {
+  padding: 20px;
+  background: #f1f5f9;
+  min-height: 100vh;
 }
-.content-wrapper { max-width: 960px; margin: 0 auto; }
-.back-link { font-size: 14px; color: #64748b; margin-bottom: 20px; }
-.back-link:hover { color: #6366f1; }
-
-/* 左侧卡片 */
-.profile-card {
-  background: #fff; border-radius: 20px; overflow: hidden;
-  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05); position: relative;
-  text-align: center; height: 100%;
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
-.card-bg {
-    height: 100px; background: linear-gradient(135deg, #a5b4fc, #6366f1);
+.back-btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
 }
-.card-content { padding: 0 30px 40px; margin-top: -50px; }
-.avatar-section { position: relative; margin-bottom: 15px; display: inline-block; }
-.avatar-ring {
-    padding: 4px; background: #fff; border-radius: 50%; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: relative; cursor: pointer;
+.back-btn:hover {
+  background: #e2e8f0;
 }
-.main-avatar { background: #e0e7ff; color: #6366f1; font-size: 36px; font-weight: 600; }
-.camera-icon {
-    position: absolute; bottom: 0; right: 0; background: #1e293b; color: #fff;
-    width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    border: 3px solid #fff; font-size: 14px;
+.header-content h1 {
+  margin: 0 0 4px 0;
+  font-size: 24px;
+  color: #1e293b;
 }
-
-.user-name { margin: 10px 0 5px; color: #1e293b; font-size: 20px; font-weight: 700; }
-.user-email { margin: 0; color: #64748b; font-size: 14px; }
-
-.info-badges {
-    display: flex; justify-content: center; align-items: center; margin-top: 30px;
-    background: #f8fafc; padding: 15px; border-radius: 12px;
+.header-content p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
 }
-.badge-item { display: flex; flex-direction: column; width: 80px; }
-.badge-item .num { font-weight: 700; color: #334155; font-size: 18px; }
-.badge-item .txt { font-size: 11px; color: #94a3b8; margin-top: 4px; }
-.divider { width: 1px; height: 24px; background: #e2e8f0; }
-
-/* 右侧设置 */
-.settings-card {
-    background: #fff; border-radius: 20px; min-height: 400px;
-    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05); padding: 30px;
+.content {
+  display: flex;
+  gap: 24px;
 }
-:deep(.custom-tabs .el-tabs__nav-wrap::after) { height: 1px; background-color: #f1f5f9; }
-:deep(.custom-tabs .el-tabs__item) { font-size: 15px; color: #64748b; }
-:deep(.custom-tabs .el-tabs__item.is-active) { color: #6366f1; font-weight: 600; }
-:deep(.custom-tabs .el-tabs__active-bar) { background-color: #6366f1; height: 3px; border-radius: 3px; }
-
-.tab-inner { padding-top: 20px; max-width: 420px; }
-.tab-title { font-size: 16px; margin-bottom: 24px; color: #1e293b; }
-
-.minimal-form :deep(.el-form-item__label) { color: #64748b; padding-bottom: 4px; }
-.minimal-form :deep(.el-input__wrapper) {
-    box-shadow: none; background: #f8fafc; border: 1px solid transparent; padding: 8px 12px;
-    border-radius: 8px; transition: all 0.3s;
+.sidebar {
+  width: 280px;
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
-.minimal-form :deep(.el-input__wrapper.is-focus) {
-    background: #fff; border-color: #c7d2fe; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+.avatar-section {
+  text-align: center;
+  margin-bottom: 30px;
 }
-
-.alert-box {
-    background: #fffbeb; border: 1px solid #fcd34d; color: #b45309;
-    padding: 10px 14px; border-radius: 8px; font-size: 13px; display: flex; align-items: center; gap: 8px; margin-bottom: 20px;
+.avatar-uploader {
+  display: inline-block;
 }
-.save-btn { width: 100%; border-radius: 8px; font-weight: 600; padding: 20px; margin-top: 10px; }
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #f1f5f9;
+}
+.avatar-uploader-icon {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: #94a3b8;
+  border: 4px dashed #cbd5e1;
+}
+.user-info h3 {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  color: #1e293b;
+}
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+.info-item:last-child {
+  border-bottom: none;
+}
+.info-label {
+  color: #64748b;
+}
+.info-value {
+  color: #1e293b;
+  font-weight: 500;
+}
+.main-content {
+  flex: 1;
+}
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-bottom: 24px;
+}
+.card:last-child {
+  margin-bottom: 0;
+}
+.card h2 {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #334155;
+  font-weight: 500;
+}
+:deep(.el-input__wrapper) {
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px #e2e8f0 inset;
+}
+:deep(.el-input__wrapper.is-focus) {
+  box-shadow: 0 0 0 1px #818cf8 inset;
+}
+.warning-box {
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  color: #b45309;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.save-btn {
+  width: 100%;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 20px;
+  margin-top: 10px;
+}
+.password-strength {
+  font-size: 12px;
+  margin-top: 6px;
+}
+.password-strength.weak {
+  color: #ef4444;
+}
+.password-strength.medium {
+  color: #f59e0b;
+}
+.password-strength.strong {
+  color: #10b981;
+}
+.form-footer {
+  margin-top: 30px;
+}
+</style>
