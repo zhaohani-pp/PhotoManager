@@ -97,7 +97,7 @@ const handleRegister = async () => {
   
   loading.value = true;
   try {
-    await axios.post('http://localhost:3000/api/register', {
+    await axios.post('/api/register', {
         username: form.username, email: form.email, password: form.password, confirmPassword: form.confirmPassword
     });
     ElMessage.success('注册成功，请登录');

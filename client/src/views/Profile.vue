@@ -13,7 +13,7 @@
             <div class="card-content">
               <div class="avatar-section">
                 <el-upload
-                  action="http://localhost:3000/api/user/avatar"
+                  action="http://10.162.15.4:3000/api/user/avatar"
                   :headers="uploadHeaders"
                   :show-file-list="false"
                   :on-success="handleAvatarSuccess"
@@ -22,7 +22,7 @@
                   <div class="avatar-ring">
                     <el-avatar 
                       :size="90" 
-                      :src="userInfo.avatar_path ? `http://localhost:3000/${userInfo.avatar_path}` : ''"
+                      :src="userInfo.avatar_path ? `http://10.162.15.4:3000/${userInfo.avatar_path}` : ''"
                       class="main-avatar"
                     >
                       {{ userInfo.username?.charAt(0).toUpperCase() }}
@@ -135,7 +135,7 @@ const uploadHeaders = computed(() => ({
 
 const fetchProfile = async () => {
     try {
-        const res = await axios.get('http://localhost:3000/api/user/profile', {
+        const res = await axios.get('/api/user/profile', {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         userInfo.value = res.data;
@@ -150,7 +150,7 @@ const handleAvatarSuccess = (res) => {
 const updatePassword = async () => {
     if (!pwdForm.value.oldPassword || !pwdForm.value.newPassword) return ElMessage.warning('请填写完整');
     try {
-        await axios.post('http://localhost:3000/api/user/password', pwdForm.value, {
+        await axios.post('/api/user/password', pwdForm.value, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         ElMessage.success('密码修改成功');
@@ -167,7 +167,7 @@ const updateEmail = async () => {
     if (!emailRegex.test(emailForm.value.newEmail)) return ElMessage.warning('邮箱格式不正确');
     
     try {
-        await axios.post('http://localhost:3000/api/user/email', emailForm.value, {
+        await axios.post('/api/user/email', emailForm.value, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         ElMessage.success('邮箱修改成功，请重新登录');
@@ -261,4 +261,3 @@ onMounted(fetchProfile);
     padding: 10px 14px; border-radius: 8px; font-size: 13px; display: flex; align-items: center; gap: 8px; margin-bottom: 20px;
 }
 .save-btn { width: 100%; border-radius: 8px; font-weight: 600; padding: 20px; margin-top: 10px; }
-</style>

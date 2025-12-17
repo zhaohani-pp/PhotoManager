@@ -26,7 +26,7 @@
             <div class="user-pill">
               <el-avatar 
                 :size="32" 
-                :src="userInfo.avatar_path ? `http://localhost:3000/${userInfo.avatar_path}` : ''"
+                :src="userInfo.avatar_path ? `http://10.162.15.4:3000/${userInfo.avatar_path}` : ''"
                 class="nav-avatar"
               >
                  {{ userInfo.username?.charAt(0).toUpperCase() }}
@@ -51,7 +51,7 @@
           <div class="profile-main">
             <el-avatar 
               :size="56" 
-              :src="userInfo.avatar_path ? `http://localhost:3000/${userInfo.avatar_path}` : ''"
+              :src="userInfo.avatar_path ? `http://10.162.15.4:3000/${userInfo.avatar_path}` : ''"
               class="profile-avatar"
             >
               {{ userInfo.username?.charAt(0).toUpperCase() }}
@@ -82,7 +82,7 @@
         <el-upload
           class="upload-widget"
           drag
-          action="http://localhost:3000/api/upload"
+          action="http://10.162.15.4:3000/api/upload"
           :headers="uploadHeaders" 
           :show-file-list="false"
           :on-success="handleSuccess"
@@ -132,7 +132,7 @@
              <div v-if="isVideoFile(img.original_filename)" class="video-thumbnail-container">
                 <el-image 
                   class="pin-image"
-                  :src="`http://localhost:3000/${img.thumbnail_path}?t=${img.updatedKey || ''}`" 
+                  :src="`http://10.162.15.4:3000/${img.thumbnail_path}?t=${img.updatedKey || ''}`" 
                   fit="cover" 
                   lazy
                 />
@@ -142,7 +142,7 @@
              </div>
              <el-image v-else
                 class="pin-image"
-                :src="`http://localhost:3000/${img.thumbnail_path}?t=${img.updatedKey || ''}`" 
+                :src="`http://10.162.15.4:3000/${img.thumbnail_path}?t=${img.updatedKey || ''}`" 
                 fit="cover" 
                 lazy
               />
@@ -175,10 +175,10 @@
       <div v-if="selectedImage" class="detail-content">
           <div class="detail-preview">
               <video v-if="isVideoFile(selectedImage.original_filename)" controls class="detail-video">
-                  <source :src="`http://localhost:3000/${selectedImage.file_path}`" type="video/mp4">
+                  <source :src="`http://10.162.15.4:3000/${selectedImage.file_path}`" type="video/mp4">
                   您的浏览器不支持视频播放。
               </video>
-              <img v-else :src="`http://localhost:3000/${selectedImage.thumbnail_path}?t=${selectedImage.updatedKey || ''}`" />
+              <img v-else :src="`http://10.162.15.4:3000/${selectedImage.thumbnail_path}?t=${selectedImage.updatedKey || ''}`" />
           </div>
           <div class="detail-grid">
               <div class="d-item full">
@@ -390,7 +390,7 @@ const accountDays = computed(() => {
 
 const fetchUserInfo = async () => {
     try {
-        const res = await axios.get('http://localhost:3000/api/user/profile', {
+        const res = await axios.get('/api/user/profile', {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         userInfo.value = res.data;
@@ -399,7 +399,7 @@ const fetchUserInfo = async () => {
 
 const fetchAlbums = async () => {
     try {
-        const res = await axios.get('http://localhost:3000/api/albums', {
+        const res = await axios.get('/api/albums', {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         albums.value = res.data;
@@ -411,9 +411,9 @@ const fetchAlbums = async () => {
 const fetchImages = async () => {
     loading.value = true;
     try {
-        let url = 'http://localhost:3000/api/images';
+        let url = '/api/images';
         if (activeAlbum.value !== 'all') {
-            url = `http://localhost:3000/api/albums/${activeAlbum.value}`;
+            url = `/api/albums/${activeAlbum.value}`;
         }
 
         const res = await axios.get(url, { 
@@ -445,7 +445,7 @@ const showDetail = (img) => {
 
 const deleteImage = async (id) => {
     try {
-        await axios.delete(`http://localhost:3000/api/images/${id}`, {
+        await axios.delete(`http://10.162.15.4:3000/api/images/${id}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         ElMessage.success('照片已移除');
@@ -454,7 +454,7 @@ const deleteImage = async (id) => {
 };
 
 const copyLink = (path) => {
-    navigator.clipboard.writeText(`http://localhost:3000/${path}`)
+    navigator.clipboard.writeText(`http://10.162.15.4:3000/${path}`)
         .then(() => ElMessage.success('链接已复制'));
 };
 
@@ -493,7 +493,7 @@ const handleEditorOpened = async () => {
     
     try {
         const imgRes = await axios.get(
-            `http://localhost:3000/${currentEditingImage.value.file_path}?t=${Date.now()}`,
+            `http://10.162.15.4:3000/${currentEditingImage.value.file_path}?t=${Date.now()}`,
             { responseType: 'blob' }
         );
 
@@ -648,7 +648,7 @@ const saveEditedImage = async () => {
         };
 
         await axios.post(
-            `http://localhost:3000/api/images/${currentEditingImage.value.id}/process`, 
+            `/api/images/${currentEditingImage.value.id}/process`, 
             payload, 
             { 
                 headers: { 
@@ -692,7 +692,7 @@ const viewerVisible = ref(false);
 const previewIndex = ref(0);
 
 // 计算属性用于图片预览列表
-const previewList = computed(() => images.value.map(img => `http://localhost:3000/${img.file_path}`));
+const previewList = computed(() => images.value.map(img => `http://10.162.15.4:3000/${img.file_path}`));
 
 // 显示输入框用于添加标签
 const showInput = () => {
@@ -707,7 +707,7 @@ const handleInputConfirm = async () => {
     const inputVal = inputValue.value.trim();
     if (inputVal) {
         try {
-            await axios.post(`http://localhost:3000/api/images/${selectedImage.value.id}/tags`, 
+            await axios.post(`http://10.162.15.4:3000/api/images/${selectedImage.value.id}/tags`, 
                 { tagName: inputVal },
                 {
                     headers: { 
@@ -1008,4 +1008,3 @@ const handleInputConfirm = async () => {
     transition: filter 0.15s ease-out;
     object-fit: contain;
 }
-</style>

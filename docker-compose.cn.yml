@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # MySQL数据库服务
+  db:
+    image: registry.cn-hangzhou.aliyuncs.com/zhuyali/mysql:8.0
+    container_name: photo_manager_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: zhnyjy777
+      MYSQL_DATABASE: photo_db
+      MYSQL_USER: photouser
+      MYSQL_PASSWORD: photopass
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database_schema.sql:/docker-entrypoint-initdb.d/database_schema.sql:ro
+    networks:
+      - photo_network
+
+  # 后端服务
+  server:
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: photo_manager_server
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_USER: photouser
+      DB_PASSWORD: photopass
+      DB_NAME: photo_db
+    depends_on:
+      - db
+    volumes:
+      - ./server/uploads:/app/uploads
+    networks:
+      - photo_network
+
+  # 前端服务
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: photo_manager_client
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    networks:
+      - photo_network
+
+volumes:
+  db_data:
+
+networks:
+  photo_network:
+    driver: bridge

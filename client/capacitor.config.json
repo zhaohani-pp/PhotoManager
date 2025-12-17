@@ -1,0 +1,5 @@
+{
+  "appId": "com.myname.gallery",
+  "appName": "CloudGallery",
+  "webDir": "dist"
+}

@@ -33,7 +33,7 @@
               
               <div v-if="msg.images && msg.images.length" class="chat-gallery">
                 <div v-for="img in msg.images" :key="img.id" class="mini-card" @click="viewImage(img)">
-                  <img :src="`http://localhost:3000/${img.thumbnail_path}`" loading="lazy" />
+                  <img :src="`http://10.162.15.4:3000/${img.thumbnail_path}`" loading="lazy" />
                   <span class="img-date">{{ new Date(img.capture_time).toLocaleDateString() }}</span>
                 </div>
               </div>
@@ -217,7 +217,7 @@ const sendMessage = async () => {
 
   try {
     const history = messages.value.filter(m => !m.images).slice(-6).map(m => ({ role: m.role, content: m.content }));
-    const res = await axios.post('http://localhost:3000/api/chat', { message: userText, history }, {
+    const res = await axios.post('http://10.162.15.4:3000/api/chat', { message: userText, history }, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
     messages.value.push({ role: 'assistant', content: res.data.text, images: res.data.images || [] });
@@ -230,7 +230,7 @@ const sendMessage = async () => {
 };
 
 const viewImage = (img) => {
-    window.open(`http://localhost:3000/${img.file_path}`, '_blank');
+    window.open(`http://10.162.15.4:3000/${img.file_path}`, '_blank');
 };
 
 // 组件卸载时清理所有监听

@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # 1. 数据库服务
+  db:
+    image: mysql:8.0  # 假设你用的是 MySQL
+    container_name: photo_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword  # 设置你的密码
+      MYSQL_DATABASE: photomanager       # 你的数据库名
+    volumes:
+      - db_data:/var/lib/mysql           # 数据持久化
+      # 这里的魔法：Docker 启动时会自动执行这个 SQL 文件建表！
+      - ./database_schema.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+
+  # 2. 后端服务
+  backend:
+    build: ./server
+    container_name: photo_backend
+    restart: always
+    depends_on:
+      - db
+    environment:
+      # 告诉后端数据库在哪里
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=rootpassword
+      - DB_NAME=photomanager
+      - PORT=3000
+    networks:
+      - app-network
+
+  # 3. 前端服务
+  frontend:
+    build: ./client
+    container_name: photo_frontend
+    restart: always
+    ports:
+      - "8080:80"  # 浏览器访问 localhost:8080
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
+    driver: bridge

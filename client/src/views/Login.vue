@@ -60,7 +60,7 @@ const handleLogin = async () => {
   if(!form.username || !form.password) return ElMessage.warning('请输入完整信息');
   loading.value = true;
   try {
-    const res = await axios.post('http://localhost:3000/api/login', form);
+    const res = await axios.post('/api/login', form);
     localStorage.setItem('token', res.data.token);
     ElMessage.success('登录成功');
     router.push('/');
